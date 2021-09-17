@@ -6,7 +6,7 @@ uses
     Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
     Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.ComCtrls, IdBaseComponent,
     IdComponent, IdTCPConnection, IdTCPClient, IdExplicitTLSClientServerBase,
-    IdFTP, Vcl.StdCtrls, Vcl.ExtCtrls;
+    IdFTP, Vcl.StdCtrls, Vcl.ExtCtrls, IniFiles;
 
 type
     TForm33 = class(TForm)
@@ -29,6 +29,7 @@ type
         procedure Btn_DesconectarClick(Sender: TObject);
         procedure btn_UploadClick(Sender: TObject);
         procedure btnSairClick(Sender: TObject);
+        procedure FormShow(Sender: TObject);
         private
             { Private declarations }
         public
@@ -51,8 +52,16 @@ begin
 end;
 
 procedure TForm33.Btn_ConectarClick(Sender: TObject);
+var
+      ArquivoINI: TIniFile;
 begin
     Screen.Cursor := -17;
+    ArquivoINI := TIniFile.Create('C:\ftp.ini');
+    ArquivoINI.WriteString('Host', 'host', Edit_Host.Text);
+    ArquivoINI.WriteString('Host', 'usuario', Edit_Name.Text);
+    ArquivoINI.Free;
+
+
     Application.ProcessMessages;
     Memo_Relatorio_FTP.Lines.Clear;
     IdFTP1.Host := Edit_Host.Text;
@@ -81,7 +90,7 @@ begin
     Btn_Desconectar.Enabled := True;
     Btn_Conectar.Enabled := False;
 
-Screen.Cursor := 0;
+    Screen.Cursor := 0;
 end;
 
 procedure TForm33.Btn_DesconectarClick(Sender: TObject);
@@ -162,6 +171,20 @@ begin
     Memo_Relatorio_FTP.Lines.Add(' Operação: troca de diretorio local ');
     Memo_Relatorio_FTP.Lines.Add(' Diretório após a Operação: ' + GetCurrentDir);
     Memo_Relatorio_FTP.Lines.Add('');
+
+end;
+
+procedure TForm33.FormShow(Sender: TObject);
+var
+      ArquivoINI: TIniFile;
+    Mensagem, usuario: string;
+begin
+    ArquivoINI := TIniFile.Create('C:\ftp.ini');
+    Mensagem := ArquivoINI.ReadString('Host', 'host', '');
+    usuario := ArquivoINI.ReadString('Host', 'usuario', '');
+    Edit_Host.Text := Mensagem;
+    Edit_Name.Text := usuario;
+    ArquivoINI.Free;
 
 end;
 
