@@ -29,7 +29,6 @@ type
         procedure Btn_DesconectarClick(Sender: TObject);
         procedure btn_UploadClick(Sender: TObject);
         procedure btnSairClick(Sender: TObject);
-        procedure FormShow(Sender: TObject);
         private
             { Private declarations }
         public
@@ -56,12 +55,6 @@ var
       ArquivoINI: TIniFile;
 begin
     Screen.Cursor := -17;
-    ArquivoINI := TIniFile.Create('C:\ftp.ini');
-    ArquivoINI.WriteString('Host', 'host', Edit_Host.Text);
-    ArquivoINI.WriteString('Host', 'usuario', Edit_Name.Text);
-    ArquivoINI.Free;
-
-
     Application.ProcessMessages;
     Memo_Relatorio_FTP.Lines.Clear;
     IdFTP1.Host := Edit_Host.Text;
@@ -122,8 +115,7 @@ var
       m: TStream;
     f: TStream;
     t: Cardinal;
-    Nome_Arquivo,
-      Auxiliar: String;
+    Nome_Arquivo, Auxiliar: String;
     contador: Integer;
 begin
     Auxiliar := '';
@@ -153,11 +145,9 @@ begin
 
                 f := TFileStream.Create(OpenDialog1.FileName, fmOpenRead);
                 m := TMemoryStream.Create;
-                m.CopyFrom(f, f.Size);
-                m.Seek(0, 0);
+                m.Position := 0;
                 t := GetTickCount;
-                IdFTP1.Put(m, Nome_Arquivo);
-
+                IdFTP1.Put(f, Nome_Arquivo, True);
                 Memo_Relatorio_FTP.Lines.Add(Format(' tempo % d milesegundos ', [GetTickCount - t]));
                 Memo_Relatorio_FTP.Lines.Add(Format(' Tamanho % d bytes ', [m.Size]));
                 Memo_Relatorio_FTP.Lines.Add('');
@@ -171,20 +161,6 @@ begin
     Memo_Relatorio_FTP.Lines.Add(' Operação: troca de diretorio local ');
     Memo_Relatorio_FTP.Lines.Add(' Diretório após a Operação: ' + GetCurrentDir);
     Memo_Relatorio_FTP.Lines.Add('');
-
-end;
-
-procedure TForm33.FormShow(Sender: TObject);
-var
-      ArquivoINI: TIniFile;
-    Mensagem, usuario: string;
-begin
-    ArquivoINI := TIniFile.Create('C:\ftp.ini');
-    Mensagem := ArquivoINI.ReadString('Host', 'host', '');
-    usuario := ArquivoINI.ReadString('Host', 'usuario', '');
-    Edit_Host.Text := Mensagem;
-    Edit_Name.Text := usuario;
-    ArquivoINI.Free;
 
 end;
 

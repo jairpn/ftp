@@ -14,7 +14,6 @@ object Form33: TForm33
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
-  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Bevel1: TBevel
@@ -92,10 +91,11 @@ object Form33: TForm33
   end
   object Edit_Host: TEdit
     Left = 114
-    Top = 27
+    Top = 31
     Width = 255
     Height = 21
     TabOrder = 4
+    Text = 'ftp.journalnews.com.br'
   end
   object Edit_Name: TEdit
     Left = 112
@@ -103,6 +103,7 @@ object Form33: TForm33
     Width = 146
     Height = 21
     TabOrder = 5
+    Text = 'mar@mar.japasoft.com.br'
   end
   object Edit_Senha: TEdit
     Left = 264
@@ -111,6 +112,7 @@ object Form33: TForm33
     Height = 21
     PasswordChar = '*'
     TabOrder = 6
+    Text = 'japa0101'
   end
   object btnSair: TButton
     Left = 294
@@ -125,6 +127,7 @@ object Form33: TForm33
     Host = 'ftp.journalnews.com.br'
     ConnectTimeout = 0
     Password = 'japa0101'
+    TransferType = ftBinary
     Username = 'mar@mar.japasoft.com.br'
     NATKeepAlive.UseKeepAlive = False
     NATKeepAlive.IdleTimeMS = 0
